@@ -5,22 +5,29 @@ import { getAllEvents } from "../../data/data";
 import EventList from '../../components/events/event-list';
 import EventsSearch from '../../components/events/events-search';
 
-function AllEventsPage() {
+
+export default function AllEventsPage(props: { events: Event[]; }) {
   const router = useRouter();
-  const events = getAllEvents();
 
   function findEventsHandler(year: number, month: number) {
     const fullPath = `/events/${year}/${month}`;
-
     router.push(fullPath);
   }
 
   return (
     <Fragment>
       <EventsSearch onSearch={findEventsHandler} />
-      <EventList items={events} />
+      <EventList events={props.events} />
     </Fragment>
   );
 }
 
-export default AllEventsPage;
+export async function getStaticProps() {
+  const events = await getAllEvents();
+
+  return {
+    props: {
+      events: events
+    }
+  }
+}

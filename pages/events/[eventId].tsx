@@ -9,7 +9,8 @@ import ErrorAlert from '../../components/ui/error-alert';
 function EventDetailPage() {
   const router = useRouter();
 
-  const eventId = router.query.eventId;
+  const eventId = String(router.query.eventId);
+
   const event = getEventById(eventId);
 
   if (!event) {
@@ -22,7 +23,7 @@ function EventDetailPage() {
 
   return (
     <>
-      <EventSummary title={event.title} />
+      {/* <EventSummary title={event.title} />
       <EventLogistics
         date={event.date}
         address={event.location}
@@ -31,9 +32,10 @@ function EventDetailPage() {
       />
       <EventContent>
         <p>{event.description}</p>
-      </EventContent>
+      </EventContent> */}
     </>
   );
 }
 
 export default EventDetailPage;
+

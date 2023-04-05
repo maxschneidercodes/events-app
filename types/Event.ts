@@ -1,8 +1,9 @@
 export default interface Event {
-    key: number,
     id: string
     title: string,
+    description: string
     location : string,
-    date : Date,
+    date : string,
     image: string
+    isFeatured: boolean
 }
