@@ -1,15 +1,16 @@
 import { getFeaturedEvents } from "../data/data"
 import EventList from "../components/events/event-list";
 import Event from "../types/Event";
+import NewsletterRegistration from "../components/input/newsletter-registration";
 
 export default function HomePage(props: { featuredEvents: { featuredEvents: Event[]; }; }) {
   const { featuredEvents } = props
 
-  return (
-    <div>
-      <EventList events={featuredEvents} />
-    </div>
-  );
+  return (<>
+    <NewsletterRegistration />
+    <EventList events={featuredEvents} />
+
+  </>);
 }
 
 export async function getStaticProps() {
