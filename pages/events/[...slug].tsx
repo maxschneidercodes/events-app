@@ -1,73 +1,70 @@
-import { Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-
 import { getFilteredEvents } from "../../data/data"
 import EventList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
 import Button from '../../components/ui/button';
 import ErrorAlert from '../../components/ui/error-alert';
+import Event from '../../types/Event';
 
-function FilteredEventsPage() {
+interface DateFilter {
+  year: number,
+  month: number,
+}
+
+export default function FilteredEventsPage() {
   const router = useRouter();
 
-  const filterData = router.query.slug;
+  const [getFilteredEventsData, setFilteredEventsData] = useState<Event[]>()
+  const [getFilterData, setFilterData] = useState<DateFilter>({ year: 0, month: 0 })
 
-  if (!filterData) {
+  async function fetchEventsWith(numYear: number, numMonth: number) {
+    const filteredEvents = await getFilteredEvents({
+      year: numYear,
+      month: numMonth,
+    });
+
+    setFilteredEventsData(filteredEvents)
+  }
+
+  useEffect(() => {
+    const filterData = router.query.slug
+
+    if (filterData) {
+      const filteredYear = filterData[0];
+      const filteredMonth = filterData[1];
+
+      const numYear = +filteredYear;
+      const numMonth = +filteredMonth;
+
+      setFilterData({ year: numYear, month: numMonth })
+      fetchEventsWith(numYear, numMonth)
+    }
+  }, [])
+
+  if (!getFilteredEventsData) {
     return <p className='center'>Loading...</p>;
   }
 
-  const filteredYear = filterData[0];
-  const filteredMonth = filterData[1];
-
-  const numYear = +filteredYear;
-  const numMonth = +filteredMonth;
-
-  if (
-    isNaN(numYear) ||
-    isNaN(numMonth) ||
-    numYear > 2030 ||
-    numYear < 2021 ||
-    numMonth < 1 ||
-    numMonth > 12
-  ) {
+  if (!getFilteredEventsData || getFilteredEventsData.length === 0) {
     return (
-      <Fragment>
-        <ErrorAlert>
-          <p>Invalid filter. Please adjust your values!</p>
-        </ErrorAlert>
-        <div className='center'>
-          <Button onClick={() => { }} link='/events'>Show All Events</Button>
-        </div>
-      </Fragment>
-    );
-  }
-
-  const filteredEvents = getFilteredEvents({
-    year: numYear,
-    month: numMonth,
-  });
-
-  if (!filteredEvents || filteredEvents.length === 0) {
-    return (
-      <Fragment>
+      <>
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
         <div className='center'>
           <Button onClick={() => { }} link='/events'>Show All Events</Button>
         </div>
-      </Fragment>
+      </>
     );
   }
 
-  const date = new Date(numYear, numMonth - 1);
+  const date = new Date(getFilterData.year, getFilterData.month - 1);
 
   return (
-    <Fragment>
+    <>
       <ResultsTitle date={date} />
-      <EventList items={filteredEvents} />
-    </Fragment>
+      <EventList events={getFilteredEventsData} />
+    </>
   );
 }
-
-export default FilteredEventsPage;

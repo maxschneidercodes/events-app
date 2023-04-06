@@ -4,8 +4,8 @@ import AddressIcon from '../icons/address-icon';
 import ArrowRightIcon from '../icons/arrow-right-icon';
 import classes from './event-item.module.css';
 
-function EventItem(props: { title: any; image: any; date: any; isFeatured: boolean; description: any; key: any; location: any; id: any; }) {
-  const { title, image, date, location, id, description, key, } = props;
+function EventItem(props: { title: any; image: any; date: any; isFeatured: boolean; description: any; location: any; id: any; }) {
+  const { title, image, date, location, id, description, } = props;
 
   const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
     day: 'numeric',

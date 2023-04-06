@@ -1,6 +1,5 @@
 import { Fragment } from 'react';
 import { useRouter } from 'next/router';
-
 import { getAllEvents } from "../../data/data";
 import EventList from '../../components/events/event-list';
 import EventsSearch from '../../components/events/events-search';
@@ -8,6 +7,7 @@ import EventsSearch from '../../components/events/events-search';
 
 export default function AllEventsPage(props: { events: Event[]; }) {
   const router = useRouter();
+  const { events } = props
 
   function findEventsHandler(year: number, month: number) {
     const fullPath = `/events/${year}/${month}`;
@@ -17,7 +17,7 @@ export default function AllEventsPage(props: { events: Event[]; }) {
   return (
     <Fragment>
       <EventsSearch onSearch={findEventsHandler} />
-      <EventList events={props.events} />
+      <EventList events={events} />
     </Fragment>
   );
 }
