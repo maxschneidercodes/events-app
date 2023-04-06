@@ -1,12 +1,17 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import classes from './new-comment.module.css';
+import NotificationContext from '../../context/context';
+import { NotificationStauts } from '../../types/NotificationStatus';
 
 export default function NewComment(props: { onAddComment: (arg0: { email: string; name: string; text: string; }) => void; }) {
   const [isInvalid, setIsInvalid] = useState(false);
 
+  const notificationCtx = useContext(NotificationContext);
+
   const emailInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
+
 
   function sendCommentHandler(event: { preventDefault: () => void; }) {
     event.preventDefault();
@@ -32,6 +37,8 @@ export default function NewComment(props: { onAddComment: (arg0: { email: string
         return;
       }
 
+
+
       props.onAddComment({
         email: enteredEmail,
         name: enteredName,
@@ -45,6 +52,7 @@ export default function NewComment(props: { onAddComment: (arg0: { email: string
   if (emailInputRef.current
     && nameInputRef.current
     && commentInputRef.current) {
+
     return <p>Loading..</p>
   }
 
