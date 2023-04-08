@@ -30,3 +30,7 @@
 .error {
     background-color: #e65035;
 }
+
+.none {
+    all: unset;
+}

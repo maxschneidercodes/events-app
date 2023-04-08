@@ -6,7 +6,7 @@ import Notification from "../../components/notification/notification"
 function Layout(props: { children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }) {
 
   const notificationCtx = useContext(NotificationContext);
-  const activeNotification = notificationCtx.notificatio;
+  const activeNotification = notificationCtx.notification;
 
   return (
     <>

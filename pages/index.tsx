@@ -9,7 +9,6 @@ export default function HomePage(props: { featuredEvents: { featuredEvents: Even
   return (<>
     <NewsletterRegistration />
     <EventList events={featuredEvents} />
-
   </>);
 }
 

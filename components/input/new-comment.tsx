@@ -12,9 +12,15 @@ export default function NewComment(props: { onAddComment: (arg0: { email: string
   const nameInputRef = useRef<HTMLInputElement>(null);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
-
   function sendCommentHandler(event: { preventDefault: () => void; }) {
     event.preventDefault();
+
+    notificationCtx.showNotification(
+      {
+        title: "Saving.."
+        , message: "Comment is Saving"
+        , status: NotificationStauts.PENDING
+      })
 
     if (emailInputRef.current
       && nameInputRef.current
@@ -36,17 +42,12 @@ export default function NewComment(props: { onAddComment: (arg0: { email: string
         setIsInvalid(true);
         return;
       }
-
-
-
       props.onAddComment({
         email: enteredEmail,
         name: enteredName,
         text: enteredComment,
       });
     }
-
-
   }
 
   if (emailInputRef.current

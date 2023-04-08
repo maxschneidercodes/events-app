@@ -1,15 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import CommentList from './comment-list';
 import NewComment from './new-comment';
 import classes from './comments.module.css';
 import Comment from '../../types/Comment';
+import NotificationContext from '../../context/context';
+import { NotificationStauts } from '../../types/NotificationStatus';
+import { json } from 'stream/consumers';
 
 function Comments(props: { eventId: any; }) {
   const { eventId } = props;
 
+  const notificationCtx = useContext(NotificationContext);
+
   const [showComments, setShowComments] = useState(false);
-  const [comments, setComments] = useState<Comment[]>([{ name: "", email: "", text: "" }]);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   useEffect(() => {
     fetch("/api/comments/" + eventId)
@@ -33,7 +38,19 @@ function Comments(props: { eventId: any; }) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+        notificationCtx.showNotification(
+          {
+            title: "Success",
+            message: "Comment saved",
+            status: NotificationStauts.SUCCESS
+          })
+      }).catch(err => {
+        notificationCtx.showNotification(
+          {
+            title: "Error",
+            message: "An Error Occured" + JSON.stringify(err),
+            status: NotificationStauts.ERROR
+          })
       })
   }
 

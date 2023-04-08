@@ -8,7 +8,6 @@ export default function Document() {
             <body>
                 <Main />
                 <NextScript />
-                <Notification title={"asd"} message={"asd"} status={"success"} />
             </body>
         </Html>
     )
